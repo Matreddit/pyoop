@@ -82,17 +82,17 @@ print()
 # Завдання 7. До двох створених об’єктів застосувати функцію
 # isinstance() для з’ясування приналежності об’єктів до певного класу.
 
-print(isinstance(t, Triangle))
-print(isinstance(et, Triangle))
-print(isinstance(rt, Triangle))
+print('t ' + str(isinstance(t, Triangle)))
+print('t ' + str(isinstance(et, Triangle)))
+print('t ' + str(isinstance(rt, Triangle)))
 
-print(isinstance(t, EquiTriangle))
-print(isinstance(et, EquiTriangle))
-print(isinstance(rt, EquiTriangle))
+print('e ' + str(isinstance(t, EquiTriangle)))
+print('e ' + str(isinstance(et, EquiTriangle)))
+print('e ' + str(isinstance(rt, EquiTriangle)))
 
-print(isinstance(t, RightTriangle))
-print(isinstance(et, RightTriangle))
-print(isinstance(rt, RightTriangle))
+print('r ' + str(isinstance(t, RightTriangle)))
+print('r ' + str(isinstance(et, RightTriangle)))
+print('r ' + str(isinstance(rt, RightTriangle)))
 print('\nЗавдання 8.')
 
 # Завдання 8. Для своєї предметної області створити два дочірніх класи.
@@ -117,6 +117,8 @@ class Character(Triangle):
             print("ухильнувся")
             return
         self.healthPoints -= damage - self.strength
+        if(self.healthPoints < 0):
+            self.healthPoints = 0
         print(f"-{damage - self.strength} hp. Current hp: {self.healthPoints}")
 
     def attack(self, enemy):
@@ -148,18 +150,22 @@ class Fountain(Triangle):
         print(f"+50 hp. Current hp: {character.healthPoints}")
 
     def expand(self, character):
-        character.a += self.gameLevel
-        character.b += self.gameLevel
-        character.c += self.gameLevel
-        print(f"Triangle expanded. New sides: a={self.a}, b={self.b}, c={self.c}")
+        character.a += self.gameLevel * 5
+        character.b += self.gameLevel * 5
+        character.c += self.gameLevel * 5
+        print(f"Triangle expanded: a={self.a}, b={self.b}, c={self.c}")
 
 
     def say(self):
-        print(f"I can heal {self.healthPoints} hp")
+        print(f"I am Fountain, I can heal {self.gameLevel * 50} hp")
 
+print()
 fountain = Fountain(30, 30, 30, 1)
 fountain.say()
 fountain.heal(phantom)
+
+print(f"Phantom's perimetr: {phantom.perimeter()}")
 fountain.expand(phantom)
+print(f"Phantom's perimetr: {phantom.perimeter()}")
 
 
