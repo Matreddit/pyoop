@@ -1,3 +1,5 @@
+import random
+
 # Завдання 1. Створити систему класів
 # Triangle
 #     EquiTriangle(Triangle)
@@ -91,7 +93,7 @@ print(isinstance(rt, EquiTriangle))
 print(isinstance(t, RightTriangle))
 print(isinstance(et, RightTriangle))
 print(isinstance(rt, RightTriangle))
-print()
+print('\nЗавдання 8.')
 
 # Завдання 8. Для своєї предметної області створити два дочірніх класи.
 # Нехай екземпляри дочірніх класів містять нову властивість. Розробити
@@ -99,49 +101,65 @@ print()
 # (урахувати наслідування).
 # предметна область: комп’ютерні ігри
 
-##########################################################################
-##########################################################################
-##########################################################################
-##########################################################################
-# redo
-class PhysicsTriangle(Triangle):
-    def __init__(self, a, b, c, density):
+
+
+
+class Character(Triangle):
+    def __init__(self, a, b, c, strength, agility, healthPoints, name):
         super().__init__(a, b, c)
-        self.density = density  # Щільність матеріалу
-    
-    def mass(self):
-        return self.area() * self.density
+        self.strength = strength     # броня
+        self.agility = agility / 100 # ухилення %
+        self.healthPoints = healthPoints
+        self.name = name
+
+    def getDamage(self, damage):
+        if random.random() <= self.agility:
+            print("ухильнувся")
+            return
+        self.healthPoints -= damage - self.strength
+        print(f"-{damage - self.strength} hp. Current hp: {self.healthPoints}")
+
+    def attack(self, enemy):
+        enemy.getDamage(self.strength * 10)
 
     def say(self):
-        print("It's a physics-based triangle")
+        print(f"I am {self.name}, I have {self.strength} armor, {self.agility * 100}% agility and {self.healthPoints} hp")
 
-
-class GraphicsTriangle(Triangle):
-    def __init__(self, a, b, c, color):
-        super().__init__(a, b, c)
-        self.color = color  # Колір трикутника
     
-    def change_color(self, new_color):
-        self.color = new_color
+
+phantom = Character(3, 4, 5, 10, 70, 800, "Phantom")
+phantom.say()
+
+pudge = Character(6, 8, 10, 15, 0, 5000, "Pudge")
+pudge.say()
+for i in range(10):
+    pudge.attack(phantom)
+
+phantom.say()
+
+
+class Fountain(Triangle):
+    def __init__(self, a, b, c, gameLevel):
+        super().__init__(a, b, c)
+        self.gameLevel = gameLevel
+
+    def heal(self, character):
+        character.healthPoints += 50 * self.gameLevel
+        print(f"+50 hp. Current hp: {character.healthPoints}")
+
+    def expand(self, character):
+        character.a += self.gameLevel
+        character.b += self.gameLevel
+        character.c += self.gameLevel
+        print(f"Triangle expanded. New sides: a={self.a}, b={self.b}, c={self.c}")
+
 
     def say(self):
-        print("It's a graphics-based triangle")
+        print(f"I can heal {self.healthPoints} hp")
+
+fountain = Fountain(30, 30, 30, 1)
+fountain.say()
+fountain.heal(phantom)
+fountain.expand(phantom)
 
 
-# Створення об'єктів
-pt = PhysicsTriangle(3, 4, 5, 2.5)
-gt = GraphicsTriangle(3, 4, 5, "red")
-
-# Використання методів
-pt.say()
-print(f"Perimeter: {pt.perimeter()}")
-print(f"Area: {pt.area()}")
-print(f"Mass: {pt.mass()}")
-print()
-
-gt.say()
-print(f"Perimeter: {gt.perimeter()}")
-print(f"Area: {gt.area()}")
-print(f"Color: {gt.color}")
-gt.change_color("blue")
-print(f"New Color: {gt.color}")
